@@ -1,5 +1,6 @@
 package org.tinylcy;
 
+import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U1;
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
@@ -9,17 +10,31 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
- * Created by chenyangli on 17/2/8.
+ * Created by chenyangli.
  */
 public class ClassReader {
 
-    public static ClassFile read(InputStream in) {
+    public static ClassFile read(InputStream inputStream) {
         ClassFile classFile = new ClassFile();
-        classFile.magic = U4.read(in);
-        classFile.minorVersion = U2.read(in);
-        classFile.majorVersion = U2.read(in);
-        classFile.constantPoolCount = U2.read(in);
-        classFile.cpInfo = readConstantPool(in, (short) (classFile.constantPoolCount.getValue() - 1)).getCpInfo();
+        classFile.magic = U4.read(inputStream);
+        classFile.minorVersion = U2.read(inputStream);
+        classFile.majorVersion = U2.read(inputStream);
+        classFile.constantPoolCount = U2.read(inputStream);
+        ConstantPool constantPool = readConstantPool(inputStream,
+                (short) (classFile.constantPoolCount.getValue() - 1));
+        classFile.cpInfo = constantPool.getCpInfo();
+        classFile.accessFlags = U2.read(inputStream);
+        classFile.thisClass = U2.read(inputStream);
+        classFile.superClass = U2.read(inputStream);
+        classFile.interfacesCount = U2.read(inputStream);
+        classFile.interfaces = new U2[classFile.interfacesCount.getValue()];
+        readInterfaces(inputStream, classFile, classFile.interfacesCount.getValue());
+        classFile.fieldsCount = U2.read(inputStream);
+        readFieldsInfo(constantPool, inputStream, classFile, classFile.fieldsCount.getValue());
+        classFile.methodsCount = U2.read(inputStream);
+        readMethodsInfo(constantPool, inputStream, classFile, classFile.methodsCount.getValue());
+        classFile.attributesCount = U2.read(inputStream);
+        readClassAttributesInfo(constantPool, inputStream, classFile, classFile.attributesCount.getValue());
 
         System.out.println("magic = " + classFile.magic.getHexValue());
         System.out.println("minorVersion = " + classFile.minorVersion.getValue());
@@ -28,6 +43,26 @@ public class ClassReader {
         for (int i = 0; i < classFile.cpInfo.length; i++) {
             System.out.println("cpInfo[" + (i + 1) + "] = " + classFile.cpInfo[i]);
         }
+        System.out.println("accessFlags = " + classFile.accessFlags.getHexValue());
+        System.out.println("thisClass = " + classFile.thisClass.getValue());
+        System.out.println("superClass = " + classFile.superClass.getValue());
+        System.out.println("interfacesCount = " + classFile.interfacesCount.getValue());
+        for (int i = 0; i < classFile.interfacesCount.getValue(); i++) {
+            System.out.println("interfaces[" + i + "] = " + classFile.interfaces[i].getValue());
+        }
+        System.out.println("fieldsCount = " + classFile.fieldsCount.getValue());
+        for (int i = 0; i < classFile.fieldsCount.getValue(); i++) {
+            System.out.println("fields[" + i + "] = " + classFile.fields[i]);
+        }
+        System.out.println("methodsCount = " + classFile.methodsCount.getValue());
+        for (int i = 0; i < classFile.methodsCount.getValue(); i++) {
+            System.out.println("methods[" + i + "] = " + classFile.methods[i]);
+        }
+        System.out.println("attributesCount = " + classFile.attributesCount.getValue());
+        for (int i = 0; i < classFile.attributesCount.getValue(); i++) {
+            System.out.println("attributes[" + i + "] = " + classFile.attributes[i]);
+        }
+
         return classFile;
     }
 
@@ -106,4 +141,42 @@ public class ClassReader {
         }
         return constantPoolInfo;
     }
+
+    public static void readInterfaces(InputStream inputStream, ClassFile classFile, short interfacesCount) {
+        for (int i = 0; i < interfacesCount; i++) {
+            classFile.interfaces[i] = U2.read(inputStream);
+        }
+    }
+
+    public static void readFieldsInfo(ConstantPool constantPool, InputStream inputStream, ClassFile classFile, short fieldsCount) {
+        ArrayList<FieldInfo> fieldInfoList = new ArrayList<FieldInfo>();
+        for (int i = 0; i < fieldsCount; i++) {
+            FieldInfo fieldInfo = new FieldInfo();
+            fieldInfo.read(inputStream);
+            fieldInfoList.add(fieldInfo);
+        }
+        classFile.fields = fieldInfoList.toArray(new FieldInfo[0]);
+    }
+
+    public static void readMethodsInfo(ConstantPool constantPool, InputStream inputStream,
+                                       ClassFile classFile, short methodsCount) {
+        classFile.methods = new MethodInfo[methodsCount];
+        for (int i = 0; i < methodsCount; i++) {
+            MethodInfo methodInfo = new MethodInfo();
+            methodInfo.read(constantPool, inputStream);
+            classFile.methods[i] = methodInfo;
+        }
+    }
+
+    public static void readClassAttributesInfo(ConstantPool constantPool, InputStream inputStream,
+                                               ClassFile classFile, short classAttributesCount) {
+        classFile.attributes = new BasicAttributeInfo[classAttributesCount];
+        for (int i = 0; i < classAttributesCount; i++) {
+            short attributeNameIndex = U2.read(inputStream).getValue();
+            BasicAttributeInfo attributeInfo = BasicAttributeInfo.newAttributeInfo(constantPool, attributeNameIndex);
+            attributeInfo.read(constantPool, inputStream);
+            classFile.attributes[i] = attributeInfo;
+        }
+    }
+
 }

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by chenyangli on 17/2/7.
+ * Created by chenyangli.
  */
 public class ConstantUtf8Info extends ConstantPoolInfo {
 

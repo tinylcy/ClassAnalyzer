@@ -3,7 +3,7 @@ package org.tinylcy.constantpool;
 import java.io.InputStream;
 
 /**
- * Created by chenyangli on 17/2/7.
+ * Created by chenyangli.
  */
 public abstract class ConstantPoolInfo {
 

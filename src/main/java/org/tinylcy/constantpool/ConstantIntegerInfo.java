@@ -5,7 +5,7 @@ import org.tinylcy.basictype.U4;
 import java.io.InputStream;
 
 /**
- * Created by chenyangli on 17/2/8.
+ * Created by chenyangli.
  */
 public class ConstantIntegerInfo extends ConstantPoolInfo {
 

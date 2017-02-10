@@ -3,7 +3,7 @@ package org.tinylcy.constantpool;
 import org.tinylcy.basictype.U2;
 
 /**
- * Created by chenyangli on 17/2/8.
+ * Created by chenyangli.
  */
 public class ConstantPool {
 
