@@ -1,4 +1,4 @@
-package org.fenixsoft.clazz;
+package org.tinylcy.clazz;
 
 public class TestClass implements Cloneable {
 

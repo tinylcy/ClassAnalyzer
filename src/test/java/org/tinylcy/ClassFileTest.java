@@ -12,7 +12,7 @@ public class ClassFileTest {
 
     @Test
     public void classfile() throws Exception {
-        File file = new File("/Users/chenyangli/IdeaProjects/ClassAnalyzer/src/test/resources/TestClass.class");
+        File file = new File("path/to/TestClass.class");
         FileInputStream inputStream = new FileInputStream(file);
         ClassReader.read(inputStream);
     }

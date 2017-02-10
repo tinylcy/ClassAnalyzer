@@ -86,7 +86,7 @@ cpInfo[14] = ConstantUtf8Info{bytesValue='SourceFile'}
 cpInfo[15] = ConstantUtf8Info{bytesValue='TestClass.java'}
 cpInfo[16] = ConstantNameAndTypeInfo{nameIndex=8, descriptorIndex=9}
 cpInfo[17] = ConstantNameAndTypeInfo{nameIndex=6, descriptorIndex=7}
-cpInfo[18] = ConstantUtf8Info{bytesValue='org/fenixsoft/clazz/TestClass'}
+cpInfo[18] = ConstantUtf8Info{bytesValue='org/tinylcy/clazz/TestClass'}
 cpInfo[19] = ConstantUtf8Info{bytesValue='java/lang/Object'}
 cpInfo[20] = ConstantUtf8Info{bytesValue='java/lang/Cloneable'}
 accessFlags = 21
