@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 /**
- * Created by chenyangli on 17/2/9.
+ * Created by chenyangli.
  */
 public class MethodInfo {
 

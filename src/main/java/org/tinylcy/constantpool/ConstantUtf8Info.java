@@ -15,7 +15,6 @@ public class ConstantUtf8Info extends ConstantPoolInfo {
     private byte[] bytes;
     private String bytesValue;
 
-
     public ConstantUtf8Info(byte tag) {
         setTag(tag);
     }
