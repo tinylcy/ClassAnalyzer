@@ -2,6 +2,7 @@ package org.tinylcy.attributeinfo;
 
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
+import org.tinylcy.constantpool.ConstantPool;
 
 import java.io.InputStream;
 
@@ -17,11 +18,9 @@ public class ConstantValue extends BasicAttributeInfo {
     }
 
     @Override
-    public void read(InputStream inputStream) {
-        U2 attributeNameIndexU2 = U2.read(inputStream);
+    public void read(ConstantPool constantPool, InputStream inputStream) {
         U4 attributeLengthU4 = U4.read(inputStream);
         U2 constantValueIndexU2 = U2.read(inputStream);
-        setAttributeNameIndex(attributeNameIndexU2.getValue());
         setAttributeLength(attributeLengthU4.getValue());
         constantValueIndex = constantValueIndexU2.getValue();
     }

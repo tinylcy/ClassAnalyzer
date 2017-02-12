@@ -152,7 +152,7 @@ public class ClassReader {
         ArrayList<FieldInfo> fieldInfoList = new ArrayList<FieldInfo>();
         for (int i = 0; i < fieldsCount; i++) {
             FieldInfo fieldInfo = new FieldInfo();
-            fieldInfo.read(inputStream);
+            fieldInfo.read(constantPool, inputStream);
             fieldInfoList.add(fieldInfo);
         }
         classFile.fields = fieldInfoList.toArray(new FieldInfo[0]);

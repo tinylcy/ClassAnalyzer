@@ -3,6 +3,7 @@ package org.tinylcy;
 import org.tinylcy.attributeinfo.AttributeInfo;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U2;
+import org.tinylcy.constantpool.ConstantPool;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class FieldInfo {
     private short attributesCount;
     private BasicAttributeInfo[] attributes;
 
-    public void read(InputStream inputStream) {
+    public void read(ConstantPool constantPool, InputStream inputStream) {
         U2 accessFlagsU2 = U2.read(inputStream);
         U2 nameIndexU2 = U2.read(inputStream);
         U2 descriptorIndexU2 = U2.read(inputStream);
@@ -31,7 +32,9 @@ public class FieldInfo {
 
         ArrayList<BasicAttributeInfo> basicAttributeInfoList = new ArrayList<BasicAttributeInfo>();
         for (int i = 0; i < attributesCount; i++) {
-
+            short attributeNameIndex = U2.read(inputStream).getValue();
+            BasicAttributeInfo basicAttributeInfo = BasicAttributeInfo.newAttributeInfo(constantPool, attributeNameIndex);
+            basicAttributeInfo.read(constantPool, inputStream);
         }
         this.attributes = basicAttributeInfoList.toArray(new AttributeInfo[0]);
     }

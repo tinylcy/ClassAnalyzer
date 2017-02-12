@@ -11,6 +11,7 @@ import java.io.InputStream;
 public class LocalVariableTable extends BasicAttributeInfo {
 
     private short localVariableTableLength;
+    private LocalVariableInfo [] localVariableTable;
 
     public LocalVariableTable(short attributeNameIndex) {
         setAttributeNameIndex(attributeNameIndex);
@@ -19,12 +20,15 @@ public class LocalVariableTable extends BasicAttributeInfo {
 
     @Override
     public void read(InputStream inputStream) {
-        U2 attributeNameIndexU2 = U2.read(inputStream);
         U4 attributeLengthU4 = U4.read(inputStream);
         U2 localVariableTableLengthU2 = U2.read(inputStream);
-        setAttributeNameIndex(attributeNameIndexU2.getValue());
         setAttributeLength(attributeLengthU4.getValue());
         localVariableTableLength = localVariableTableLengthU2.getValue();
+        localVariableTable = new LocalVariableInfo[localVariableTableLength];
+        for(int i = 0; i < localVariableTableLength; i++) {
+            LocalVariableInfo localVariableInfo = new LocalVariableInfo();
+            localVariableInfo.read(inputStream);
+        }
     }
 
     private class LocalVariableInfo {
