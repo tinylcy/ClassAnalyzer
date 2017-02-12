@@ -1,6 +1,7 @@
 package org.tinylcy.attributeinfo;
 
 import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -13,7 +14,8 @@ public class BootstrapMethods extends BasicAttributeInfo {
     private short numBootstrapMethods;
     private BootstrapMethod[] bootstrapMethod;
 
-    public BootstrapMethods(short attributeNameIndex) {
+    public BootstrapMethods(ConstantPool constantPool, short attributeNameIndex) {
+        super(constantPool);
         setAttributeNameIndex(attributeNameIndex);
     }
 
@@ -23,14 +25,10 @@ public class BootstrapMethods extends BasicAttributeInfo {
     }
 
     @Override
-    public void read(ConstantPool constantPool, InputStream inputStream) {
-        super.read(constantPool, inputStream);
-    }
-
-    @Override
     public String toString() {
         return "BootstrapMethods{" +
                 "attributeNameIndex=" + getAttributeNameIndex() +
+                " [attribute name = " + ((ConstantUtf8Info) (constantPool.getCpInfo()[getAttributeNameIndex() - 1])).getValue() + "]" +
                 ", attributeLength=" + getAttributeLength() +
                 ", numBootstrapMethods=" + numBootstrapMethods +
                 ", bootstrapMethod=" + Arrays.toString(bootstrapMethod) +

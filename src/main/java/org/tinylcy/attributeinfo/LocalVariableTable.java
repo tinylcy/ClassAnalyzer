@@ -2,6 +2,8 @@ package org.tinylcy.attributeinfo;
 
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
+import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 
@@ -11,9 +13,10 @@ import java.io.InputStream;
 public class LocalVariableTable extends BasicAttributeInfo {
 
     private short localVariableTableLength;
-    private LocalVariableInfo [] localVariableTable;
+    private LocalVariableInfo[] localVariableTable;
 
-    public LocalVariableTable(short attributeNameIndex) {
+    public LocalVariableTable(ConstantPool constantPool, short attributeNameIndex) {
+        super(constantPool);
         setAttributeNameIndex(attributeNameIndex);
     }
 
@@ -25,7 +28,7 @@ public class LocalVariableTable extends BasicAttributeInfo {
         setAttributeLength(attributeLengthU4.getValue());
         localVariableTableLength = localVariableTableLengthU2.getValue();
         localVariableTable = new LocalVariableInfo[localVariableTableLength];
-        for(int i = 0; i < localVariableTableLength; i++) {
+        for (int i = 0; i < localVariableTableLength; i++) {
             LocalVariableInfo localVariableInfo = new LocalVariableInfo();
             localVariableInfo.read(inputStream);
         }
@@ -67,6 +70,7 @@ public class LocalVariableTable extends BasicAttributeInfo {
     public String toString() {
         return "LocalVariableTable{" +
                 "attributeNameIndex=" + getAttributeNameIndex() +
+                " [attribute name = " + ((ConstantUtf8Info) (constantPool.getCpInfo()[getAttributeNameIndex() - 1])).getValue() + "]" +
                 ", attributeLength=" + getAttributeLength() +
                 ", localVariableTableLength=" + localVariableTableLength +
                 '}';

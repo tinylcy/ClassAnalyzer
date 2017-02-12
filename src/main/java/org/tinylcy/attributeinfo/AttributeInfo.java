@@ -12,6 +12,10 @@ public class AttributeInfo extends BasicAttributeInfo {
 
     private byte[] info;
 
+    public AttributeInfo(ConstantPool constantPool) {
+        super(constantPool);
+    }
+
     @Override
     public void read(InputStream inputStream) {
         info = new byte[(int) getAttributeLength()];
@@ -21,8 +25,4 @@ public class AttributeInfo extends BasicAttributeInfo {
         }
     }
 
-    @Override
-    public void read(ConstantPool constantPool, InputStream inputStream) {
-        super.read(constantPool, inputStream);
-    }
 }

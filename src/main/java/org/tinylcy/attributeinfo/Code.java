@@ -4,6 +4,7 @@ import org.tinylcy.basictype.U1;
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
 import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -22,12 +23,13 @@ public class Code extends BasicAttributeInfo {
     private short attributesCount;
     private BasicAttributeInfo[] attributes;
 
-    public Code(short attributeNameIndex) {
+    public Code(ConstantPool constantPool, short attributeNameIndex) {
+        super(constantPool);
         setAttributeNameIndex(attributeNameIndex);
     }
 
     @Override
-    public void read(ConstantPool constantPool, InputStream inputStream) {
+    public void read(InputStream inputStream) {
         U4 attributeLengthU4 = U4.read(inputStream);
         U2 maxStackU2 = U2.read(inputStream);
         U2 maxLocalsU2 = U2.read(inputStream);
@@ -66,6 +68,7 @@ public class Code extends BasicAttributeInfo {
     public String toString() {
         return "Code{" +
                 "attributeNameIndex=" + getAttributeNameIndex() +
+                " [attribute name = " + ((ConstantUtf8Info) (constantPool.getCpInfo()[getAttributeNameIndex() - 1])).getValue() + "]" +
                 ", attributeLength=" + getAttributeLength() +
                 ", maxStack=" + maxStack +
                 ", maxLocals=" + maxLocals +

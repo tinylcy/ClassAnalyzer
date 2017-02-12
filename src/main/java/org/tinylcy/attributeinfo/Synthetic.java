@@ -2,6 +2,8 @@ package org.tinylcy.attributeinfo;
 
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
+import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 
@@ -10,7 +12,8 @@ import java.io.InputStream;
  */
 public class Synthetic extends BasicAttributeInfo {
 
-    public Synthetic(short attributeNameIndex) {
+    public Synthetic(ConstantPool constantPool, short attributeNameIndex) {
+        super(constantPool);
         setAttributeNameIndex(attributeNameIndex);
     }
 
@@ -26,6 +29,7 @@ public class Synthetic extends BasicAttributeInfo {
     public String toString() {
         return "Synthetic{" +
                 "attributeNameIndex=" + getAttributeNameIndex() +
+                " [attribute name = " + ((ConstantUtf8Info) (constantPool.getCpInfo()[getAttributeNameIndex() - 1])).getValue() + "]" +
                 ", attributeLength=" + getAttributeLength() +
                 '}';
     }

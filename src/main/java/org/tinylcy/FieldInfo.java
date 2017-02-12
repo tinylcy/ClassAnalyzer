@@ -4,6 +4,7 @@ import org.tinylcy.attributeinfo.AttributeInfo;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U2;
 import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,13 +15,19 @@ import java.util.Arrays;
  */
 public class FieldInfo {
 
+    private ConstantPool constantPool;
+
     private short accessFlags;
     private short nameIndex;
     private short descriptorIndex;
     private short attributesCount;
     private BasicAttributeInfo[] attributes;
 
-    public void read(ConstantPool constantPool, InputStream inputStream) {
+    public FieldInfo(ConstantPool constantPool) {
+        this.constantPool = constantPool;
+    }
+
+    public void read(InputStream inputStream) {
         U2 accessFlagsU2 = U2.read(inputStream);
         U2 nameIndexU2 = U2.read(inputStream);
         U2 descriptorIndexU2 = U2.read(inputStream);
@@ -34,7 +41,7 @@ public class FieldInfo {
         for (int i = 0; i < attributesCount; i++) {
             short attributeNameIndex = U2.read(inputStream).getValue();
             BasicAttributeInfo basicAttributeInfo = BasicAttributeInfo.newAttributeInfo(constantPool, attributeNameIndex);
-            basicAttributeInfo.read(constantPool, inputStream);
+            basicAttributeInfo.read(inputStream);
         }
         this.attributes = basicAttributeInfoList.toArray(new AttributeInfo[0]);
     }
@@ -43,8 +50,10 @@ public class FieldInfo {
     public String toString() {
         return "FieldInfo{" +
                 "accessFlags=" + accessFlags +
-                ", nameIndex=" + nameIndex +
-                ", descriptorIndex=" + descriptorIndex +
+                ", nameIndex=" + nameIndex + " [name = " +
+                ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
+                ", descriptorIndex=" + descriptorIndex + " [descriptor = " +
+                ((ConstantUtf8Info) (constantPool.getCpInfo()[descriptorIndex - 1])).getValue() + "]" +
                 ", attributesCount=" + attributesCount +
                 ", attributes=" + Arrays.toString(attributes) +
                 '}';

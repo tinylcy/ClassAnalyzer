@@ -3,6 +3,7 @@ package org.tinylcy;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U2;
 import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -12,13 +13,19 @@ import java.util.Arrays;
  */
 public class MethodInfo {
 
+    private ConstantPool constantPool;
+
     private short accessFlags;
     private short nameIndex;
     private short descriptorIndex;
     private short attributesCount;
     private BasicAttributeInfo[] attributes;
 
-    public void read(ConstantPool constantPool, InputStream inputStream) {
+    public MethodInfo(ConstantPool constantPool) {
+        this.constantPool = constantPool;
+    }
+
+    public void read(InputStream inputStream) {
         U2 accessFlagsU2 = U2.read(inputStream);
         U2 nameIndexU2 = U2.read(inputStream);
         U2 descriptorIndexU2 = U2.read(inputStream);
@@ -33,7 +40,7 @@ public class MethodInfo {
             short attributeNameIndex = attributeNameIndexU2.getValue();
             BasicAttributeInfo basicAttributeInfo = BasicAttributeInfo.newAttributeInfo(constantPool,
                     attributeNameIndex);
-            basicAttributeInfo.read(constantPool, inputStream);
+            basicAttributeInfo.read(inputStream);
             attributes[i] = basicAttributeInfo;
         }
     }
@@ -42,10 +49,13 @@ public class MethodInfo {
     public String toString() {
         return "MethodInfo{" +
                 "accessFlags=" + accessFlags +
-                ", nameIndex=" + nameIndex +
-                ", descriptorIndex=" + descriptorIndex +
+                ", nameIndex=" + nameIndex + " [name = " +
+                ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
+                ", descriptorIndex=" + descriptorIndex + " [descriptor = " +
+                ((ConstantUtf8Info) (constantPool.getCpInfo()[descriptorIndex - 1])).getValue() + "]" +
                 ", attributesCount=" + attributesCount +
                 ", attributes=" + Arrays.toString(attributes) +
                 '}';
     }
+
 }

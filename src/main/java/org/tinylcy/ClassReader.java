@@ -151,8 +151,8 @@ public class ClassReader {
     public static void readFieldsInfo(ConstantPool constantPool, InputStream inputStream, ClassFile classFile, short fieldsCount) {
         ArrayList<FieldInfo> fieldInfoList = new ArrayList<FieldInfo>();
         for (int i = 0; i < fieldsCount; i++) {
-            FieldInfo fieldInfo = new FieldInfo();
-            fieldInfo.read(constantPool, inputStream);
+            FieldInfo fieldInfo = new FieldInfo(constantPool);
+            fieldInfo.read(inputStream);
             fieldInfoList.add(fieldInfo);
         }
         classFile.fields = fieldInfoList.toArray(new FieldInfo[0]);
@@ -162,8 +162,8 @@ public class ClassReader {
                                        ClassFile classFile, short methodsCount) {
         classFile.methods = new MethodInfo[methodsCount];
         for (int i = 0; i < methodsCount; i++) {
-            MethodInfo methodInfo = new MethodInfo();
-            methodInfo.read(constantPool, inputStream);
+            MethodInfo methodInfo = new MethodInfo(constantPool);
+            methodInfo.read(inputStream);
             classFile.methods[i] = methodInfo;
         }
     }
@@ -174,7 +174,7 @@ public class ClassReader {
         for (int i = 0; i < classAttributesCount; i++) {
             short attributeNameIndex = U2.read(inputStream).getValue();
             BasicAttributeInfo attributeInfo = BasicAttributeInfo.newAttributeInfo(constantPool, attributeNameIndex);
-            attributeInfo.read(constantPool, inputStream);
+            attributeInfo.read(inputStream);
             classFile.attributes[i] = attributeInfo;
         }
     }

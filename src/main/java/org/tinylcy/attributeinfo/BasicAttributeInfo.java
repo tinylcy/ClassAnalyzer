@@ -11,13 +11,16 @@ import java.io.InputStream;
  */
 public class BasicAttributeInfo {
 
+    public ConstantPool constantPool;
+
     private short attributeNameIndex;
     private long attributeLength;
 
-    public void read(InputStream inputStream) {
+    public BasicAttributeInfo(ConstantPool constantPool) {
+        this.constantPool = constantPool;
     }
 
-    public void read(ConstantPool constantPool, InputStream inputStream) {
+    public void read(InputStream inputStream) {
     }
 
     public static BasicAttributeInfo newAttributeInfo(ConstantPool constantPool, short attributeNameIndex) {
@@ -28,21 +31,21 @@ public class BasicAttributeInfo {
             attributeName = ((ConstantUtf8Info) constantPoolInfo).getValue();
         }
         if (attributeName.equals("Code")) {
-            basicAttributeInfo = new Code(attributeNameIndex);
+            basicAttributeInfo = new Code(constantPool, attributeNameIndex);
         } else if (attributeName.equals("ConstantValue")) {
-            basicAttributeInfo = new ConstantValue(attributeNameIndex);
+            basicAttributeInfo = new ConstantValue(constantPool, attributeNameIndex);
         } else if (attributeName.equals("Deprecated")) {
-            basicAttributeInfo = new Deprecated(attributeNameIndex);
+            basicAttributeInfo = new Deprecated(constantPool, attributeNameIndex);
         } else if (attributeName.equals("Exceptions")) {
-            basicAttributeInfo = new Exceptions(attributeNameIndex);
+            basicAttributeInfo = new Exceptions(constantPool, attributeNameIndex);
         } else if (attributeName.equals("LineNumberTable")) {
-            basicAttributeInfo = new LineNumberTable(attributeNameIndex);
+            basicAttributeInfo = new LineNumberTable(constantPool, attributeNameIndex);
         } else if (attributeName.equals("LocalVariableTable")) {
-            basicAttributeInfo = new LocalVariableTable(attributeNameIndex);
+            basicAttributeInfo = new LocalVariableTable(constantPool, attributeNameIndex);
         } else if (attributeName.equals("SourceFile")) {
-            basicAttributeInfo = new SourceFile(attributeNameIndex);
+            basicAttributeInfo = new SourceFile(constantPool, attributeNameIndex);
         } else if (attributeName.equals("Synthetic")) {
-            basicAttributeInfo = new Synthetic(attributeNameIndex);
+            basicAttributeInfo = new Synthetic(constantPool, attributeNameIndex);
         }
         basicAttributeInfo.setAttributeNameIndex(attributeNameIndex);
         return basicAttributeInfo;

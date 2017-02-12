@@ -2,6 +2,8 @@ package org.tinylcy.attributeinfo;
 
 import org.tinylcy.basictype.U2;
 import org.tinylcy.basictype.U4;
+import org.tinylcy.constantpool.ConstantPool;
+import org.tinylcy.constantpool.ConstantUtf8Info;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -14,16 +16,15 @@ public class InnerClasses extends BasicAttributeInfo {
     private short numberOfClasses;
     private InnerClassesInfo[] innerClasses;
 
-    public InnerClasses(short attributeNameIndex) {
+    public InnerClasses(ConstantPool constantPool, short attributeNameIndex) {
+        super(constantPool);
         setAttributeNameIndex(attributeNameIndex);
     }
 
     @Override
     public void read(InputStream inputStream) {
-        U2 attributeNameIndexU2 = U2.read(inputStream);
         U4 attributeLengthU4 = U4.read(inputStream);
         U2 numberOfClassesU2 = U2.read(inputStream);
-        setAttributeNameIndex(attributeNameIndexU2.getValue());
         setAttributeLength(attributeLengthU4.getValue());
         numberOfClasses = numberOfClassesU2.getValue();
         innerClasses = new InnerClassesInfo[numberOfClasses];
@@ -38,6 +39,7 @@ public class InnerClasses extends BasicAttributeInfo {
     public String toString() {
         return "InnerClasses{" +
                 "attributeNameIndex=" + getAttributeNameIndex() +
+                " [attribute name = " + ((ConstantUtf8Info) (constantPool.getCpInfo()[getAttributeNameIndex() - 1])).getValue() + "]" +
                 ", attributeLength=" + getAttributeLength() +
                 ", numberOfClasses=" + numberOfClasses +
                 ", innerClasses=" + Arrays.toString(innerClasses) +
