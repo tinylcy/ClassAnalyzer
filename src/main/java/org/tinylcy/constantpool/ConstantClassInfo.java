@@ -27,4 +27,8 @@ public class ConstantClassInfo extends ConstantPoolInfo{
                 "index=" + index +
                 '}';
     }
+
+    public short getIndex() {
+        return index;
+    }
 }

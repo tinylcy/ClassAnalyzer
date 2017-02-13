@@ -49,7 +49,7 @@ public class FieldInfo {
     @Override
     public String toString() {
         return "FieldInfo{" +
-                "accessFlags=" + accessFlags +
+                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedFieldAccessFlags(accessFlags) +
                 ", nameIndex=" + nameIndex + " [name = " +
                 ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
                 ", descriptorIndex=" + descriptorIndex + " [descriptor = " +

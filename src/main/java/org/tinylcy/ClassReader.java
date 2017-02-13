@@ -14,6 +14,44 @@ import java.util.ArrayList;
  */
 public class ClassReader {
 
+    public static void analyze(InputStream inputStream) {
+
+        ClassFile classFile = read(inputStream);
+        ConstantPool constantPool = new ConstantPool(classFile.constantPoolCount.getValue());
+        constantPool.setCpInfo(classFile.cpInfo);
+
+        System.out.println("magic = " + classFile.magic.getHexValue());
+        System.out.println("minorVersion = " + classFile.minorVersion.getValue());
+        System.out.println("majorVersion = " + classFile.majorVersion.getValue());
+        System.out.println("constantPoolCount = " + classFile.constantPoolCount.getValue());
+        for (int i = 0; i < classFile.cpInfo.length; i++) {
+            System.out.println("cpInfo[" + (i + 1) + "] = " + classFile.cpInfo[i]);
+        }
+        System.out.println("accessFlags = " + classFile.accessFlags.getHexValue() +
+                ", " + AccessFlags.getFormattedClassAccessFlags(classFile.accessFlags.getValue()));
+        System.out.println("thisClass = " + classFile.thisClass.getValue() +
+                ", this class name = " + getConstantClassInfoValue(constantPool, classFile.thisClass.getValue()));
+        System.out.println("superClass = " + classFile.superClass.getValue() +
+                ", super class name = " + getConstantClassInfoValue(constantPool, classFile.superClass.getValue()));
+        System.out.println("interfacesCount = " + classFile.interfacesCount.getValue());
+        for (int i = 0; i < classFile.interfacesCount.getValue(); i++) {
+            System.out.println("interfaces[" + i + "] = " + classFile.interfaces[i].getValue() +
+                    ", interface name = " + getConstantClassInfoValue(constantPool, classFile.interfaces[i].getValue()));
+        }
+        System.out.println("fieldsCount = " + classFile.fieldsCount.getValue());
+        for (int i = 0; i < classFile.fieldsCount.getValue(); i++) {
+            System.out.println("fields[" + i + "] = " + classFile.fields[i]);
+        }
+        System.out.println("methodsCount = " + classFile.methodsCount.getValue());
+        for (int i = 0; i < classFile.methodsCount.getValue(); i++) {
+            System.out.println("methods[" + i + "] = " + classFile.methods[i]);
+        }
+        System.out.println("attributesCount = " + classFile.attributesCount.getValue());
+        for (int i = 0; i < classFile.attributesCount.getValue(); i++) {
+            System.out.println("attributes[" + i + "] = " + classFile.attributes[i]);
+        }
+    }
+
     public static ClassFile read(InputStream inputStream) {
         ClassFile classFile = new ClassFile();
         classFile.magic = U4.read(inputStream);
@@ -35,33 +73,6 @@ public class ClassReader {
         readMethodsInfo(constantPool, inputStream, classFile, classFile.methodsCount.getValue());
         classFile.attributesCount = U2.read(inputStream);
         readClassAttributesInfo(constantPool, inputStream, classFile, classFile.attributesCount.getValue());
-
-        System.out.println("magic = " + classFile.magic.getHexValue());
-        System.out.println("minorVersion = " + classFile.minorVersion.getValue());
-        System.out.println("majorVersion = " + classFile.majorVersion.getValue());
-        System.out.println("constantPoolCount = " + classFile.constantPoolCount.getValue());
-        for (int i = 0; i < classFile.cpInfo.length; i++) {
-            System.out.println("cpInfo[" + (i + 1) + "] = " + classFile.cpInfo[i]);
-        }
-        System.out.println("accessFlags = " + classFile.accessFlags.getHexValue());
-        System.out.println("thisClass = " + classFile.thisClass.getValue());
-        System.out.println("superClass = " + classFile.superClass.getValue());
-        System.out.println("interfacesCount = " + classFile.interfacesCount.getValue());
-        for (int i = 0; i < classFile.interfacesCount.getValue(); i++) {
-            System.out.println("interfaces[" + i + "] = " + classFile.interfaces[i].getValue());
-        }
-        System.out.println("fieldsCount = " + classFile.fieldsCount.getValue());
-        for (int i = 0; i < classFile.fieldsCount.getValue(); i++) {
-            System.out.println("fields[" + i + "] = " + classFile.fields[i]);
-        }
-        System.out.println("methodsCount = " + classFile.methodsCount.getValue());
-        for (int i = 0; i < classFile.methodsCount.getValue(); i++) {
-            System.out.println("methods[" + i + "] = " + classFile.methods[i]);
-        }
-        System.out.println("attributesCount = " + classFile.attributesCount.getValue());
-        for (int i = 0; i < classFile.attributesCount.getValue(); i++) {
-            System.out.println("attributes[" + i + "] = " + classFile.attributes[i]);
-        }
 
         return classFile;
     }
@@ -177,6 +188,13 @@ public class ClassReader {
             attributeInfo.read(inputStream);
             classFile.attributes[i] = attributeInfo;
         }
+    }
+
+    private static String getConstantClassInfoValue(ConstantPool constantPool, short constantClassInfoIndex) {
+        ConstantClassInfo constantClassInfo = (ConstantClassInfo) constantPool.getCpInfo()[constantClassInfoIndex - 1];
+        short index = constantClassInfo.getIndex();
+        ConstantUtf8Info constantUtf8Info = ((ConstantUtf8Info) (constantPool.getCpInfo()[index - 1]));
+        return constantUtf8Info.getValue();
     }
 
 }

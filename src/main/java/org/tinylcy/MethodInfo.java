@@ -48,7 +48,7 @@ public class MethodInfo {
     @Override
     public String toString() {
         return "MethodInfo{" +
-                "accessFlags=" + accessFlags +
+                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedMethodAccessFlags(accessFlags) +
                 ", nameIndex=" + nameIndex + " [name = " +
                 ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
                 ", descriptorIndex=" + descriptorIndex + " [descriptor = " +

@@ -6,6 +6,8 @@ Yet another Java class file disassembler.
 
 The purpose of ClassAnalyzer is to help me understand Java class file thoroughly.
 
+More details: [如何实现一个 Java Class 解析器](http://tinylcy.me/2017/02/12/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAJava-Class%E8%A7%A3%E6%9E%90%E5%99%A8/)
+
 ### Demo
 
 **TestClass.java**
@@ -41,7 +43,7 @@ public class TestClass implements Cloneable {
 }
 ```
 
-**TestClass.class (OS X)**
+**TestClass.class**
 
 ```byte
 cafe babe 0000 0031 0030 0a00 0800 1f09
@@ -114,7 +116,7 @@ public class ClassFileTest {
     public void classfile() throws Exception {
         File file = new File("/path/to/TestClass.class");
         FileInputStream inputStream = new FileInputStream(file);
-        ClassReader.read(inputStream);
+        ClassReader.analyze(inputStream);
     }
 }
 ```
@@ -173,19 +175,19 @@ cpInfo[44] = ConstantUtf8Info{bytesValue='Ljava/io/PrintStream;'}
 cpInfo[45] = ConstantUtf8Info{bytesValue='java/io/PrintStream'}
 cpInfo[46] = ConstantUtf8Info{bytesValue='println'}
 cpInfo[47] = ConstantUtf8Info{bytesValue='(Ljava/lang/String;)V'}
-accessFlags = 21
-thisClass = 5
-superClass = 8
+accessFlags = 21, public super 
+thisClass = 5, this class name = org/tinylcy/TestClass
+superClass = 8, super class name = java/lang/Object
 interfacesCount = 1
-interfaces[0] = 9
+interfaces[0] = 9, interface name = java/lang/Cloneable
 fieldsCount = 2
-fields[0] = FieldInfo{accessFlags=25, nameIndex=10 [name = TAG], descriptorIndex=11 [descriptor = Ljava/lang/String;], attributesCount=1, attributes=[]}
-fields[1] = FieldInfo{accessFlags=2, nameIndex=13 [name = num], descriptorIndex=14 [descriptor = I], attributesCount=0, attributes=[]}
+fields[0] = FieldInfo{accessFlags=25: public static final , nameIndex=10 [name = TAG], descriptorIndex=11 [descriptor = Ljava/lang/String;], attributesCount=1, attributes=[]}
+fields[1] = FieldInfo{accessFlags=2: private , nameIndex=13 [name = num], descriptorIndex=14 [descriptor = I], attributesCount=0, attributes=[]}
 methodsCount = 4
-methods[0] = MethodInfo{accessFlags=1, nameIndex=15 [name = <init>], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=47, maxStack=1, maxLocals=1, codeLength=5, code=[42, -73, 0, 1, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=6, lineNumberTableLength=1, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=6}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=12, localVariableTableLength=1}]}]}
-methods[1] = MethodInfo{accessFlags=1, nameIndex=22 [name = inc], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=57, maxStack=3, maxLocals=1, codeLength=11, code=[42, 89, -76, 0, 2, 4, 96, -75, 0, 2, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=10, lineNumberTableLength=2, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=12}, LineNumberInfo{startPc=10, lineNumber=13}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=12, localVariableTableLength=1}]}]}
-methods[2] = MethodInfo{accessFlags=1, nameIndex=23 [name = exception], descriptorIndex=24 [descriptor = ()I], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=174, maxStack=1, maxLocals=5, codeLength=24, code=[4, 60, 27, 61, 6, 60, 28, -84, 77, 5, 60, 27, 62, 6, 60, 29, -84, 58, 4, 6, 60, 25, 4, -65], exceptionTableLength=4, exceptionTable=[ExceptionInfo{startPc=0, endPc=4, handlerPc=8, catchType=3}, ExceptionInfo{startPc=0, endPc=4, handlerPc=17, catchType=0}, ExceptionInfo{startPc=8, endPc=13, handlerPc=17, catchType=0}, ExceptionInfo{startPc=17, endPc=19, handlerPc=17, catchType=0}], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=42, lineNumberTableLength=10, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=18}, LineNumberInfo{startPc=2, lineNumber=19}, LineNumberInfo{startPc=4, lineNumber=24}, LineNumberInfo{startPc=6, lineNumber=19}, LineNumberInfo{startPc=8, lineNumber=20}, LineNumberInfo{startPc=9, lineNumber=21}, LineNumberInfo{startPc=11, lineNumber=22}, LineNumberInfo{startPc=13, lineNumber=24}, LineNumberInfo{startPc=15, lineNumber=22}, LineNumberInfo{startPc=17, lineNumber=24}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=52, localVariableTableLength=5}]}]}
-methods[3] = MethodInfo{accessFlags=9, nameIndex=28 [name = showTag], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=37, maxStack=2, maxLocals=0, codeLength=9, code=[-78, 0, 4, 18, 6, -74, 0, 7, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=1, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=10, lineNumberTableLength=2, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=29}, LineNumberInfo{startPc=8, lineNumber=30}]}]}]}
+methods[0] = MethodInfo{accessFlags=1: public , nameIndex=15 [name = <init>], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=47, maxStack=1, maxLocals=1, codeLength=5, code=[42, -73, 0, 1, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=6, lineNumberTableLength=1, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=6}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=12, localVariableTableLength=1}]}]}
+methods[1] = MethodInfo{accessFlags=1: public , nameIndex=22 [name = inc], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=57, maxStack=3, maxLocals=1, codeLength=11, code=[42, 89, -76, 0, 2, 4, 96, -75, 0, 2, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=10, lineNumberTableLength=2, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=12}, LineNumberInfo{startPc=10, lineNumber=13}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=12, localVariableTableLength=1}]}]}
+methods[2] = MethodInfo{accessFlags=1: public , nameIndex=23 [name = exception], descriptorIndex=24 [descriptor = ()I], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=174, maxStack=1, maxLocals=5, codeLength=24, code=[4, 60, 27, 61, 6, 60, 28, -84, 77, 5, 60, 27, 62, 6, 60, 29, -84, 58, 4, 6, 60, 25, 4, -65], exceptionTableLength=4, exceptionTable=[ExceptionInfo{startPc=0, endPc=4, handlerPc=8, catchType=3}, ExceptionInfo{startPc=0, endPc=4, handlerPc=17, catchType=0}, ExceptionInfo{startPc=8, endPc=13, handlerPc=17, catchType=0}, ExceptionInfo{startPc=17, endPc=19, handlerPc=17, catchType=0}], attributesCount=2, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=42, lineNumberTableLength=10, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=18}, LineNumberInfo{startPc=2, lineNumber=19}, LineNumberInfo{startPc=4, lineNumber=24}, LineNumberInfo{startPc=6, lineNumber=19}, LineNumberInfo{startPc=8, lineNumber=20}, LineNumberInfo{startPc=9, lineNumber=21}, LineNumberInfo{startPc=11, lineNumber=22}, LineNumberInfo{startPc=13, lineNumber=24}, LineNumberInfo{startPc=15, lineNumber=22}, LineNumberInfo{startPc=17, lineNumber=24}]}, LocalVariableTable{attributeNameIndex=19 [attribute name = LocalVariableTable], attributeLength=52, localVariableTableLength=5}]}]}
+methods[3] = MethodInfo{accessFlags=9: public static , nameIndex=28 [name = showTag], descriptorIndex=16 [descriptor = ()V], attributesCount=1, attributes=[Code{attributeNameIndex=17 [attribute name = Code], attributeLength=37, maxStack=2, maxLocals=0, codeLength=9, code=[-78, 0, 4, 18, 6, -74, 0, 7, -79], exceptionTableLength=0, exceptionTable=[], attributesCount=1, attributes=[LineNumberTable{attributeNameIndex=18 [attribute name = LineNumberTable], attributeLength=10, lineNumberTableLength=2, lineNumberTable=[LineNumberInfo{startPc=0, lineNumber=29}, LineNumberInfo{startPc=8, lineNumber=30}]}]}]}
 attributesCount = 1
 attributes[0] = SourceFile{attributeNameIndex=29 [attribute name = SourceFile], attributeLength=2, sourceFileIndex=30}
 ```
@@ -208,7 +210,7 @@ cafe babe : magic
 00 21 : index
 09 : tag
 0022 : class index
-0023 : nameAndTypeIndex
+0023 : nameAndType index
 07 : tag
 00 24 : index
 08 : tag
