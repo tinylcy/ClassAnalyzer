@@ -1,5 +1,7 @@
 package org.tinylcy;
 
+import org.tinylcy.accessflags.AccessFlags;
+import org.tinylcy.accessflags.ClassAccessFlags;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U1;
 import org.tinylcy.basictype.U2;
@@ -28,7 +30,7 @@ public class ClassReader {
             System.out.println("cpInfo[" + (i + 1) + "] = " + classFile.cpInfo[i]);
         }
         System.out.println("accessFlags = " + classFile.accessFlags.getHexValue() +
-                ", " + AccessFlags.getFormattedClassAccessFlags(classFile.accessFlags.getValue()));
+                ", " + AccessFlags.getFormattedAccessFlags(new ClassAccessFlags(), classFile.accessFlags.getValue()));
         System.out.println("thisClass = " + classFile.thisClass.getValue() +
                 ", this class name = " + getConstantClassInfoValue(constantPool, classFile.thisClass.getValue()));
         System.out.println("superClass = " + classFile.superClass.getValue() +

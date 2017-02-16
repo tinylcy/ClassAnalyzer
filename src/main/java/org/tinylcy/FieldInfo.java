@@ -1,5 +1,7 @@
 package org.tinylcy;
 
+import org.tinylcy.accessflags.AccessFlags;
+import org.tinylcy.accessflags.FieldAccessFlags;
 import org.tinylcy.attributeinfo.AttributeInfo;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U2;
@@ -49,7 +51,7 @@ public class FieldInfo {
     @Override
     public String toString() {
         return "FieldInfo{" +
-                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedFieldAccessFlags(accessFlags) +
+                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedAccessFlags(new FieldAccessFlags(), accessFlags) +
                 ", nameIndex=" + nameIndex + " [name = " +
                 ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
                 ", descriptorIndex=" + descriptorIndex + " [descriptor = " +

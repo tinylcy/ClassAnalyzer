@@ -1,5 +1,7 @@
 package org.tinylcy;
 
+import org.tinylcy.accessflags.AccessFlags;
+import org.tinylcy.accessflags.MethodAccessFlags;
 import org.tinylcy.attributeinfo.BasicAttributeInfo;
 import org.tinylcy.basictype.U2;
 import org.tinylcy.constantpool.ConstantPool;
@@ -48,7 +50,7 @@ public class MethodInfo {
     @Override
     public String toString() {
         return "MethodInfo{" +
-                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedMethodAccessFlags(accessFlags) +
+                "accessFlags=" + accessFlags + ": " + AccessFlags.getFormattedAccessFlags(new MethodAccessFlags(), accessFlags) +
                 ", nameIndex=" + nameIndex + " [name = " +
                 ((ConstantUtf8Info) (constantPool.getCpInfo()[nameIndex - 1])).getValue() + "]" +
                 ", descriptorIndex=" + descriptorIndex + " [descriptor = " +
