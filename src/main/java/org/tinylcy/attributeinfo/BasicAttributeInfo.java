@@ -14,7 +14,7 @@ public class BasicAttributeInfo {
     public ConstantPool constantPool;
 
     private short attributeNameIndex;
-    private long attributeLength;
+    private int attributeLength;
 
     public BasicAttributeInfo(ConstantPool constantPool) {
         this.constantPool = constantPool;
@@ -30,6 +30,7 @@ public class BasicAttributeInfo {
         if (constantPoolInfo instanceof ConstantUtf8Info) {
             attributeName = ((ConstantUtf8Info) constantPoolInfo).getValue();
         }
+        System.out.println("attributeName = " + attributeName);
         if (attributeName.equals("Code")) {
             basicAttributeInfo = new Code(constantPool, attributeNameIndex);
         } else if (attributeName.equals("ConstantValue")) {
@@ -42,10 +43,20 @@ public class BasicAttributeInfo {
             basicAttributeInfo = new LineNumberTable(constantPool, attributeNameIndex);
         } else if (attributeName.equals("LocalVariableTable")) {
             basicAttributeInfo = new LocalVariableTable(constantPool, attributeNameIndex);
+        } else if (attributeName.equals("LocalVariableTypeTable")) {
+            basicAttributeInfo = new LocalVariableTypeTable(constantPool, attributeNameIndex);
         } else if (attributeName.equals("SourceFile")) {
             basicAttributeInfo = new SourceFile(constantPool, attributeNameIndex);
         } else if (attributeName.equals("Synthetic")) {
             basicAttributeInfo = new Synthetic(constantPool, attributeNameIndex);
+        } else if (attributeName.equals("Signature")) {
+            basicAttributeInfo = new Signature(constantPool, attributeNameIndex);
+        } else if (attributeName.equals("BootstrapMethods")) {
+            basicAttributeInfo = new BootstrapMethods(constantPool, attributeNameIndex);
+        } else if (attributeName.equals("InnerClasses")) {
+            basicAttributeInfo = new InnerClasses(constantPool, attributeNameIndex);
+        } else {
+            basicAttributeInfo = new Unparsed(constantPool, attributeNameIndex);
         }
         basicAttributeInfo.setAttributeNameIndex(attributeNameIndex);
         return basicAttributeInfo;
@@ -63,7 +74,7 @@ public class BasicAttributeInfo {
         return attributeLength;
     }
 
-    public void setAttributeLength(long attributeLength) {
+    public void setAttributeLength(int attributeLength) {
         this.attributeLength = attributeLength;
     }
 

@@ -29,8 +29,8 @@ public class LocalVariableTable extends BasicAttributeInfo {
         localVariableTableLength = localVariableTableLengthU2.getValue();
         localVariableTable = new LocalVariableInfo[localVariableTableLength];
         for (int i = 0; i < localVariableTableLength; i++) {
-            LocalVariableInfo localVariableInfo = new LocalVariableInfo();
-            localVariableInfo.read(inputStream);
+            localVariableTable[i] = new LocalVariableInfo();
+            localVariableTable[i].read(inputStream);
         }
     }
 

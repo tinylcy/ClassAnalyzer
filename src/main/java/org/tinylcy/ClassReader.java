@@ -84,6 +84,10 @@ public class ClassReader {
         ArrayList<ConstantPoolInfo> infoList = new ArrayList<ConstantPoolInfo>();
         for (short i = 0; i < constantPoolCount; i++) {
             U1 tag = U1.read(inputStream);
+            if (tag.getValue() == ConstantPoolInfo.CONSTANT_LONG_INFO || tag.getValue() == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
+                i++;
+                infoList.add(null);
+            }
             ConstantPoolInfo info = newConstantPoolInfo(tag, inputStream);
             infoList.add(info);
         }

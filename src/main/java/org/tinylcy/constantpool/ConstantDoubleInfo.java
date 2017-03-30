@@ -1,6 +1,6 @@
 package org.tinylcy.constantpool;
 
-import org.tinylcy.basictype.U4;
+import org.tinylcy.basictype.U8;
 
 import java.io.InputStream;
 
@@ -17,8 +17,8 @@ public class ConstantDoubleInfo extends ConstantPoolInfo {
 
     @Override
     public void read(InputStream inputStream) {
-        U4 bytesValuesU4 = U4.read(inputStream);
-        this.bytesValue = bytesValuesU4.getValue();
+        U8 bytesValuesU8 = U8.read(inputStream);
+        this.bytesValue = bytesValuesU8.getValue();
     }
 
     @Override
