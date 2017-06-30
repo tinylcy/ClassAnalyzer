@@ -84,12 +84,13 @@ public class ClassReader {
         ArrayList<ConstantPoolInfo> infoList = new ArrayList<ConstantPoolInfo>();
         for (short i = 0; i < constantPoolCount; i++) {
             U1 tag = U1.read(inputStream);
-            if (tag.getValue() == ConstantPoolInfo.CONSTANT_LONG_INFO || tag.getValue() == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
+            ConstantPoolInfo info = newConstantPoolInfo(tag, inputStream);
+            infoList.add(info);
+			//先添加cpinfo，再添加空的cpinfo（dobule和long占用两个slot）
+			if (tag.getValue() == ConstantPoolInfo.CONSTANT_LONG_INFO || tag.getValue() == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
                 i++;
                 infoList.add(null);
             }
-            ConstantPoolInfo info = newConstantPoolInfo(tag, inputStream);
-            infoList.add(info);
         }
         constantPool.setCpInfo(infoList.toArray(new ConstantPoolInfo[0]));
         return constantPool;
