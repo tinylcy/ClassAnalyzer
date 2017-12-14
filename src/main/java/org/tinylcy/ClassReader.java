@@ -26,7 +26,7 @@ public class ClassReader {
         System.out.println("minorVersion = " + classFile.minorVersion.getValue());
         System.out.println("majorVersion = " + classFile.majorVersion.getValue());
         System.out.println("constantPoolCount = " + classFile.constantPoolCount.getValue());
-        for (int i = 0; i < classFile.cpInfo.length; i++) {
+        for (int i = 0; classFile.cpInfo != null && i < classFile.cpInfo.length; i++) {
             System.out.println("cpInfo[" + (i + 1) + "] = " + classFile.cpInfo[i]);
         }
         System.out.println("accessFlags = " + classFile.accessFlags.getHexValue() +
@@ -62,7 +62,7 @@ public class ClassReader {
         classFile.constantPoolCount = U2.read(inputStream);
         ConstantPool constantPool = readConstantPool(inputStream,
                 (short) (classFile.constantPoolCount.getValue() - 1));
-        classFile.cpInfo = constantPool.getCpInfo();
+        classFile.cpInfo = constantPool == null ? null : constantPool.getCpInfo();
         classFile.accessFlags = U2.read(inputStream);
         classFile.thisClass = U2.read(inputStream);
         classFile.superClass = U2.read(inputStream);
@@ -86,8 +86,8 @@ public class ClassReader {
             U1 tag = U1.read(inputStream);
             ConstantPoolInfo info = newConstantPoolInfo(tag, inputStream);
             infoList.add(info);
-			//先添加cpinfo，再添加空的cpinfo（dobule和long占用两个slot）
-			if (tag.getValue() == ConstantPoolInfo.CONSTANT_LONG_INFO || tag.getValue() == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
+			if (tag.getValue() == ConstantPoolInfo.CONSTANT_LONG_INFO ||
+                    tag.getValue() == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
                 i++;
                 infoList.add(null);
             }
@@ -198,6 +198,7 @@ public class ClassReader {
     }
 
     private static String getConstantClassInfoValue(ConstantPool constantPool, short constantClassInfoIndex) {
+        if (constantClassInfoIndex == 0) { return "No super class"; }  // If current class is `java.lang.Object.class`, this class doesn't have super class.
         ConstantClassInfo constantClassInfo = (ConstantClassInfo) constantPool.getCpInfo()[constantClassInfoIndex - 1];
         short index = constantClassInfo.getIndex();
         ConstantUtf8Info constantUtf8Info = ((ConstantUtf8Info) (constantPool.getCpInfo()[index - 1]));
