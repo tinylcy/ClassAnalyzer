@@ -6,7 +6,7 @@ Yet another Java class file disassembler.
 
 The purpose of ClassAnalyzer is to help me understand Java class file thoroughly.
 
-More details: [如何实现一个 Java Class 解析器](http://tinylcy.me/2017/02/12/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAJava-Class%E8%A7%A3%E6%9E%90%E5%99%A8/).
+More details: [如何实现一个 Java Class 解析器](http://tinylcy.me/2017/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAJava-Class%E8%A7%A3%E6%9E%90%E5%99%A8/).
 
 ### Demo
 
