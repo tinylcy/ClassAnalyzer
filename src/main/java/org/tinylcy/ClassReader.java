@@ -125,7 +125,7 @@ public class ClassReader {
                 constantPoolInfo.read(inputStream);
                 break;
             case ConstantPoolInfo.CONSTANT_STRING_INFO:
-                constantPoolInfo = new ConstantClassInfo(ConstantPoolInfo.CONSTANT_STRING_INFO);
+                constantPoolInfo = new ConstantStringInfo(ConstantPoolInfo.CONSTANT_STRING_INFO);
                 constantPoolInfo.read(inputStream);
                 break;
             case ConstantPoolInfo.CONSTANT_FIELDREF_INFO:

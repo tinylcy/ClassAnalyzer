@@ -30,7 +30,6 @@ public class BasicAttributeInfo {
         if (constantPoolInfo instanceof ConstantUtf8Info) {
             attributeName = ((ConstantUtf8Info) constantPoolInfo).getValue();
         }
-        System.out.println("attributeName = " + attributeName);
         if (attributeName.equals("Code")) {
             basicAttributeInfo = new Code(constantPool, attributeNameIndex);
         } else if (attributeName.equals("ConstantValue")) {
